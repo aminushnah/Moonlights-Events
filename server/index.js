@@ -13,6 +13,8 @@ app.get("/", (req, res) => {
 // app.use("/api/invoices", require("./routes/invoiceRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/inventory", require("./routes/inventryRoutes"));
+app.use("/api/employees", require("./routes/employeeRoutes"));
+app.use("/api/vendors", require("./routes/vendorRoutes"));
 
 
 connect()
