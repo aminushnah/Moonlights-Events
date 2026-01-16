@@ -1,29 +1,62 @@
 const Order = require("../models/orderModal");
 const Invoice = require("../models/invoiceModal");
+const Inventory = require("../models/inventoryModal");
+
+
 
 // Create Order + Auto-generate Invoice
 exports.createOrder = async (req, res) => {
     try {
+        const { items, category } = req.body;
+
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: "Order items required" });
+        }
+
+        // Check inventory availability
+        for (const item of items) {
+            const inventory = await Inventory.findOne({
+                name: new RegExp(`^${item.name}$`, "i"),
+                category
+            });
+
+            if (!inventory) {
+                return res.status(400).json({
+                    message: `Inventory item not found: ${item.name}`
+                });
+            }
+
+            if (inventory.available_quantity < item.quantity) {
+                return res.status(400).json({
+                    message: `Insufficient stock for ${item.name}`
+                });
+            }
+        }
+
+        // Create order
         const order = await Order.create(req.body);
-        // Automatically create an invoice for this order
-        const invoice = await Invoice.create({
-            order: order._id,
-            customer: order.customer,
-            totalAmount: req.body.totalAmount || 0, // optional: pass totalAmount in request body
-            dueDate: req.body.dueDate || null,      // optional: pass dueDate in request body
-        });
 
-        res.status(201).json({
-            success: true,
-            order,
-            invoice
-        });
+        // Update inventory
+        for (const item of items) {
+            await Inventory.findOneAndUpdate(
+                { name: item.name, category },
+                {
+                    $inc: {
+                        booked_quantity: item.quantity,
+                        available_quantity: -item.quantity
+                    }
+                }
+            );
+        }
 
+        res.status(201).json({ success: true, order });
     } catch (error) {
         console.error("Create Order Error:", error);
         res.status(500).json({ message: "Failed to create order" });
     }
 };
+
+
 
 
 
