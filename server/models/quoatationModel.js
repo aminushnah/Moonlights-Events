@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const quotationSchema = new mongoose.Schema({
   customerName: String,
   eventName: String,
@@ -9,7 +10,8 @@ const quotationSchema = new mongoose.Schema({
     quantity: Number,
     rate: Number
   }],
-  status: { type: String, enum: ["pending", "approved"], default: "pending" }
+  status: { type: String, enum: ["pending", "approved"], default: "pending" },
+  convertedToOrder: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("Quotation", quotationSchema);

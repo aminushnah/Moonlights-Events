@@ -8,7 +8,7 @@ const purchaseRoutes = require("./routes/purchaseRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const returnRoutes = require("./routes/returnRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
-
+const quotationRoutes = require("./routes/quotationRoutes");
 app.get("/", (req, res) => {
     res.send("Hello from Express Server 🚀");
 });
@@ -20,6 +20,8 @@ app.use("/api/purchases", purchaseRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/returns", returnRoutes);
+app.use("/api/quotations", quotationRoutes);
+
 
 
 
