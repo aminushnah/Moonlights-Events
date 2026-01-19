@@ -1,21 +1,44 @@
+// models/Inventory.js
 const mongoose = require("mongoose");
 
-const inventorySchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  category: {
-    type: String,
-    enum: ["sound_system", "lighting", "led_screen", "tent"],
-    required: true
-  },
-  total_quantity: { type: Number, required: true },
-  booked_quantity: { type: Number, default: 0 },
-  available_quantity: { type: Number }
-});
+const inventorySchema = new mongoose.Schema(
+  {
+    itemName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    description: String,
 
-inventorySchema.pre("save", function (next) {
-  this.available_quantity =
-    this.total_quantity - this.booked_quantity;
-  next();
-});
+    totalQuantity: {
+      type: Number,
+      default: 0,
+    },
+
+    availableQuantity: {
+      type: Number,
+      default: 0,
+    },
+
+    ratePerDay: {
+      type: Number,
+      default: 0,
+    },
+
+    ratePerEvent: {
+      type: Number,
+      default: 0,
+    },
+
+    location: {
+      type: String, // Rack / Room / Warehouse
+    },
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Inventory", inventorySchema);

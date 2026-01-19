@@ -5,7 +5,7 @@ const quotationSchema = new mongoose.Schema({
   eventDate: Date,
   validTill: Date,
   items: [{
-    inventoryItem: { type: mongoose.Schema.Types.ObjectId, ref: "InventoryItem" },
+    inventoryItem: { type: mongoose.Schema.Types.ObjectId, ref: "Inventory" },
     quantity: Number,
     rate: Number
   }],

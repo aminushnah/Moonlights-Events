@@ -1,88 +1,89 @@
 const Inventory = require("../models/inventoryModal");
 
+/**
+ * @desc   Create inventory item manually
+ * @route  POST /api/inventory
+ */
 exports.createInventory = async (req, res) => {
-    try {
-        const item = await Inventory.create(req.body);
-        res.status(201).json({ success: true, item });
-    } catch (error) {
-        console.error("Create Inventory Error:", error.message);
-        res.status(500).json({
-            message: error.message
-        });
-    }
+  try {
+    const inventory = await Inventory.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: inventory,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// Get inventory (optionally by category)
-exports.getInventory = async (req, res) => {
-    try {
-        const filter = {};
-        if (req.query.category) {
-            filter.category = req.query.category;
-        }
-
-        const inventory = await Inventory.find(filter);
-
-        let summary = {
-            total_items: 0,
-            booked_items: 0,
-            available_items: 0,
-            low_stock_items: 0
-        };
-
-        inventory.forEach(item => {
-            summary.total_items += item.total_quantity;
-            summary.booked_items += item.booked_quantity;
-            summary.available_items += item.available_quantity;
-
-            if (item.available_quantity <= 5) {
-                summary.low_stock_items += 1;
-            }
-        });
-
-        res.json({ success: true, summary, inventory });
-
-    } catch (error) {
-        res.status(500).json({ message: "Failed to fetch inventory" });
-    }
+/**
+ * @desc   Get all inventory items
+ * @route  GET /api/inventory
+ */
+exports.getAllInventory = async (req, res) => {
+  try {
+    const inventory = await Inventory.find().sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      count: inventory.length,
+      data: inventory,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// Get single item
+/**
+ * @desc   Get single inventory item
+ * @route  GET /api/inventory/:id
+ */
 exports.getInventoryById = async (req, res) => {
-    try {
-        const item = await Inventory.findById(req.params.id);
-        if (!item) return res.status(404).json({ message: "Item not found" });
+  try {
+    const item = await Inventory.findById(req.params.id);
 
-        res.json({ success: true, item });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to fetch item" });
+    if (!item) {
+      return res.status(404).json({ success: false, message: "Item not found" });
     }
+
+    res.status(200).json({ success: true, data: item });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// Update inventory
+
 exports.updateInventory = async (req, res) => {
-    try {
-        const item = await Inventory.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
+  try {
+    const updatedItem = await Inventory.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
 
-        if (!item) return res.status(404).json({ message: "Item not found" });
-
-        res.json({ success: true, item });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to update inventory" });
+    if (!updatedItem) {
+      return res.status(404).json({ success: false, message: "Item not found" });
     }
+
+    res.status(200).json({ success: true, data: updatedItem });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// Delete inventory
+/**
+ * @desc   Delete inventory item
+ * @route  DELETE /api/inventory/:id
+ */
 exports.deleteInventory = async (req, res) => {
-    try {
-        const item = await Inventory.findByIdAndDelete(req.params.id);
-        if (!item) return res.status(404).json({ message: "Item not found" });
+  try {
+    const deletedItem = await Inventory.findByIdAndDelete(req.params.id);
 
-        res.json({ success: true, message: "Inventory deleted" });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to delete inventory" });
+    if (!deletedItem) {
+      return res.status(404).json({ success: false, message: "Item not found" });
     }
+
+    res.status(200).json({ success: true, message: "Inventory item deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

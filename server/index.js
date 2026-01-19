@@ -1,20 +1,29 @@
 const express = require("express");
 const app = express();
-const PORT = 3000;
-const connect = require("./config/db");
-
+const PORT = 8000;
 app.use(express.json());
-
+const connect = require("./config/db");
+const inventoryRoutes = require("./routes/inventryRoutes");
+const purchaseRoutes = require("./routes/purchaseRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const returnRoutes = require("./routes/returnRoutes");
+const invoiceRoutes = require("./routes/invoiceRoutes");
 
 app.get("/", (req, res) => {
     res.send("Hello from Express Server 🚀");
 });
 
-// app.use("/api/invoices", require("./routes/invoiceRoutes"));
-app.use("/api/orders", require("./routes/orderRoutes"));
-app.use("/api/inventory", require("./routes/inventryRoutes"));
-app.use("/api/employees", require("./routes/employeeRoutes"));
-app.use("/api/vendors", require("./routes/vendorRoutes"));
+
+
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/purchases", purchaseRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/invoices", invoiceRoutes);
+app.use("/api/returns", returnRoutes);
+
+
+
+
 
 
 connect()
