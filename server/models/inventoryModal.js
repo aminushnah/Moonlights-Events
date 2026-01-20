@@ -24,15 +24,10 @@ const inventorySchema = new mongoose.Schema(
       default: 0,
     },
 
-    ratePerDay: {
+   costPrice:{
       type: Number,
-      default: 0,
-    },
-
-    ratePerEvent: {
-      type: Number,
-      default: 0,
-    },
+      required: true,
+   },
 
     location: {
       type: String, // Rack / Room / Warehouse

@@ -12,10 +12,10 @@ const orderItemSchema = new mongoose.Schema(
       required: true,
     },
     rate: Number,
-    rentalType: {
-      type: String,
-      enum: ["per-day", "per-event"],
-    },
+    // rentalType: {
+    //   type: String,
+    //   enum: ["per-day", "per-event"],
+    // },
   },
   { _id: false }
 );
@@ -32,7 +32,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["pending", "confirmed", "completed", "cancelled"],
-      default: "confirmed",
+      default: "pending",
     },
 
     items: [orderItemSchema],

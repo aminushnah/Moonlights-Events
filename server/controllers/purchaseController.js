@@ -1,15 +1,20 @@
 const Purchase = require("../models/purchaseModel");
 const Inventory = require("../models/inventoryModal");
+const { mongoose } = require("mongoose");
 
 /**
  * @desc   Create purchase & update inventory
  * @route  POST /api/purchases
  */
 exports.createPurchase = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { items } = req.body;
 
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      await session.abortTransaction();
       return res.status(400).json({
         success: false,
         message: "Purchase must contain at least one item",
@@ -17,45 +22,57 @@ exports.createPurchase = async (req, res) => {
     }
 
     // 1. Create Purchase
-    const purchase = await Purchase.create(req.body);
+    const [purchase] = await Purchase.create([req.body], { session });
 
     // 2. Update Inventory
     for (const item of items) {
-      let inventoryItem = await Inventory.findOne({
-        itemName: item.itemName,
-        category: item.category,
-      });
-
-      if (inventoryItem) {
-        // Update existing inventory
-        inventoryItem.totalQuantity += item.quantity;
-        inventoryItem.availableQuantity += item.quantity;
-        await inventoryItem.save();
-
-        item.inventoryItemId = inventoryItem._id;
-      } else {
-        // Create new inventory item
-        inventoryItem = await Inventory.create({
+      let inventoryItem = await Inventory.findOne(
+        {
           itemName: item.itemName,
           category: item.category,
-          description: item.description,
-          totalQuantity: item.quantity,
-          availableQuantity: item.quantity,
-        });
+        },
+        null,
+        { session }
+      );
 
-        item.inventoryItemId = inventoryItem._id;
+      if (inventoryItem) {
+        inventoryItem.totalQuantity += item.quantity;
+        inventoryItem.availableQuantity += item.quantity;
+        inventoryItem.costPrice = item.costPrice;
+
+        await inventoryItem.save({ session });
+      } else {
+        await Inventory.create(
+          [
+            {
+              itemName: item.itemName,
+              category: item.category,
+              totalQuantity: item.quantity,
+              availableQuantity: item.quantity,
+              costPrice: item.costPrice,
+            },
+          ],
+          { session }
+        );
       }
     }
 
-    // 3. Save inventory references
-    await purchase.save();
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(201).json({
       success: true,
       data: purchase,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    await session.abortTransaction();
+    session.endSession();
+
+    console.error("Purchase Transaction Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 

@@ -14,7 +14,10 @@ const invoiceSchema = new mongoose.Schema(
     },
 
     subtotal: Number,
-    taxAmount: Number,
+    taxAmount: {
+      type: Number,
+      default: 0
+    },
     totalAmount: Number,
 
     status: {

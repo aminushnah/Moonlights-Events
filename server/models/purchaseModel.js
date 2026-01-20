@@ -1,18 +1,27 @@
-
 const mongoose = require("mongoose");
 
 const purchaseItemSchema = new mongoose.Schema(
   {
-    itemName: String,
-    category: String,
-    quantity: Number,
-    purchasePrice: Number,
-    totalPrice: Number,
-
-    inventoryItemId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Inventory",
+    itemName: {
+      type: String,
+      required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
+
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+
+    costPrice: {
+      type: Number,
+      required: true,
+      min: 0,
+    }
   },
   { _id: false }
 );
@@ -22,20 +31,37 @@ const purchaseSchema = new mongoose.Schema(
     vendorName: {
       type: String,
       required: true,
+      trim: true,
     },
 
-    vendorPhone: String,
+    vendorPhone: {
+      type: String,
+    },
 
     purchaseDate: {
       type: Date,
       default: Date.now,
     },
 
-    items: [purchaseItemSchema],
+    items: {
+      type: [purchaseItemSchema],
+      required: true,
+    },
 
-    subtotal: Number,
-    taxAmount: Number,
-    totalAmount: Number,
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+
+    taxAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
