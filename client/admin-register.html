@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <img src="./images/logo.jpg" alt="Moon Light Events Logo" class="logo">
+
+    <h2>Admin Registration</h2>
+
+    <form id="adminForm">
+        <input type="text" placeholder="Admin Name" required>
+        <input type="email" placeholder="Admin Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already Registered?
+        <a href="user-login.html">Go to User Login</a>
+    </p>
+</div>
+
+<script>
+document.getElementById('adminForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const p = document.getElementById('password').value;
+    const cp = document.getElementById('confirmPassword').value;
+
+    if (p === cp) {
+        alert("Registration Successful!");
+        window.location.href = "user-login.html";
+    } else {
+        alert("Passwords do not match!");
+    }
+});
+</script>
+
+</body>
+</html>

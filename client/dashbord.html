@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Event Management Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#111111",        /* BLACK */
+        secondary: "#6B7280",      /* GRAY */
+        "background-light": "#F5F5F5",
+        "background-dark": "#0F0F0F",
+        "card-light": "#FFFFFF",
+        "card-dark": "#1A1A1A",
+        "border-light": "#E5E7EB",
+        "border-dark": "#2A2A2A",
+      },
+      fontFamily: {
+        display: ["Inter", "sans-serif"],
+      },
+      borderRadius: {
+        DEFAULT: "12px",
+      },
+    },
+  },
+};
+</script>
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar */
+.sidebar-item {
+  color: #6B7280;
+}
+.sidebar-item:hover {
+  background-color: rgba(0,0,0,0.05);
+  color: #111111;
+}
+.dark .sidebar-item:hover {
+  background-color: rgba(255,255,255,0.05);
+  color: #FFFFFF;
+}
+
+.sidebar-item.active {
+  background-color: rgba(0,0,0,0.07);
+  color: #111111;
+  border-right: 3px solid #111111;
+}
+.dark .sidebar-item.active {
+  background-color: rgba(255,255,255,0.07);
+  color: #FFFFFF;
+  border-right: 3px solid #FFFFFF;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+  border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #4B5563;
+}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 border-r border-gray-300 dark:border-gray-800 bg-white dark:bg-card-dark flex flex-col">
+  <div class="p-6">
+    <div class="flex items-center gap-3">
+      <!-- Logo updated -->
+      <img src="./images/logo.jpg" alt="Moon Light Events Logo" class="w-10 h-10 object-contain"/>
+      <div>
+        <h1 class="text-primary dark:text-white text-base font-bold leading-tight">Moon Light Events</h1>
+        <p class="text-secondary text-xs font-normal">Rental Management</p>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+    <a href="./dashbord.html" class="sidebar-item active flex items-center gap-3 p-3 rounded-lg transition-all">
+      <span class="material-icons-outlined">dashboard</span>
+      Dashboard
+    </a>
+
+    <a href="./inventory.html" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
+      <span class="material-icons-outlined">inventory_2</span>
+      Inventory
+    </a>
+
+    <a href="./Quotations.html" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
+      <span class="material-icons-outlined">request_quote</span>
+      Quotations
+    </a>
+
+    <a href="./orders.html" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
+      <span class="material-icons-outlined">shopping_cart</span>
+      Orders & Rentals
+    </a>
+
+    <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
+      <span class="material-icons-outlined">receipt_long</span>
+      Invoices & Payments
+    </a>
+  </nav>
+
+  <div class="p-4 border-t border-border-light dark:border-border-dark">
+    <button onclick="document.documentElement.classList.toggle('dark')"
+      class="w-full flex items-center gap-3 p-3 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition">
+      <span class="material-icons-outlined">dark_mode</span>
+      Toggle Theme
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="ml-64 flex-1 min-h-screen">
+
+<header class="h-16 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark flex items-center justify-between px-8 sticky top-0 z-10">
+
+  <div class="flex items-center bg-gray-100 dark:bg-neutral-800 rounded-full px-4 py-1.5 w-96">
+    <span class="material-icons-outlined text-gray-400 mr-2">search</span>
+    <input type="text" placeholder="Search..."
+      class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-gray-400"/>
+  </div>
+
+  <button class="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition">
+    <img class="w-8 h-8 rounded-full border border-gray-300"
+      src="./images/logo.jpg" alt="">
+    <span class="font-semibold text-sm">Admin</span>
+  </button>
+
+</header>
+
+
+<div class="p-8">
+  <h1 class="text-3xl font-bold mb-1">Dashboard</h1>
+  <p class="text-gray-500 dark:text-gray-400">Welcome back, here's what's happening today.</p>
+</div>
+</main>
+
+
+<script src="./app.js"></script>
+</body>
+</html>
