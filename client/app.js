@@ -31,10 +31,11 @@ if (protectedPages.includes(currentPage)) {
 
   if (!isLoggedIn) {
     window.location.href = "login.html";
+    window.alert("Please log in to access this page.");
   }
 }
 
-/*********************************
+/************************************
  * SIDEBAR LOAD (NO STYLE CHANGE)
  *********************************/
 const sidebar = document.getElementById("sidebar");
