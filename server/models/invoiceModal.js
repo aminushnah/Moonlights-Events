@@ -13,16 +13,47 @@ const invoiceSchema = new mongoose.Schema(
       unique: true,
     },
 
-    subtotal: Number,
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+
     taxAmount: {
       type: Number,
-      default: 0
+      default: 0,
     },
-    totalAmount: Number,
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+
+    advanceReceived: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    remainingAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    paymentType: {
+      type: String,
+      enum: ["debit", "credit"],
+      default: "credit",
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["cash", "credit", "easypaisa", "jazzcash"],
+      default: "cash",
+    },
 
     status: {
       type: String,
-      enum: ["unpaid", "paid"],
+      enum: ["unpaid", "partial", "paid"],
       default: "unpaid",
     },
 

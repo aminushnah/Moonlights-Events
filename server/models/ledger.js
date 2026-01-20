@@ -7,7 +7,7 @@ const ledgerSchema = new mongoose.Schema(
       type: String,
       enum: ["invoice", "payment", "refund"],
     },
-
+ 
     description: String,
 
     debit: {
