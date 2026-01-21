@@ -129,9 +129,14 @@ function PurchaseModule() {
                         >
                           Edit
                         </button>
-                        <button className="text-red-500 hover:underline">
-                          Delete
-                        </button>
+                        <button
+                    onClick={() =>
+                      setPurchases(prev => prev.filter((_, index) => index !== i))
+                    }
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
                       </div>
                     </td>
                   </tr>
