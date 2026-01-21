@@ -6,7 +6,7 @@ function Dashboard() {
       <h1 className="text-3xl font-bold mb-1">Dashboard</h1>
       <p className="text-gray-500 dark:text-gray-400 mb-8">Welcome back, here's what's happening today.</p>
 
-      {/* Stats Grid */}
+      {/* Stats-Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white dark:bg-card-dark p-6 rounded-lg shadow-sm border border-border-light dark:border-border-dark">
           <div className="flex items-center justify-between">
