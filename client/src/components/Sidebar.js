@@ -78,7 +78,7 @@ function Sidebar({ isDark, toggleTheme }) {
 
         <button
           disabled
-          className="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all cursor-not-allowed opacity-50"
+          className="sidebar-item flex items-center gap-3 p-3 rounded-lg text-gray-400 cursor-not-allowed hover:bg-transparent transition-all opacity-50"
         >
           <span className="material-icons-outlined">receipt_long</span>
           Invoices & Payments (Coming Soon)
